@@ -1,0 +1,25 @@
+{
+	"name": "Export Styles and Colors",
+	"description": "",
+	"author": "",
+	"homepage": "",
+	"version": "0.0.5",
+	"identifier": "com.pljns.sketch.export-styles-and-colors",
+	"compatibleVersion": "53",
+	"bundleVersion": "2.0",
+	"appcast": "https://raw.githubusercontent.com/pljns/sketch.export-styles-and-colors/master/appcast.xml",
+	"commands": [
+		{
+			"name": "Save",
+			"identifier": "save",
+			"shortcut": "",
+			"script": "save.js",
+			"handler": "save"
+		}
+	],
+	"menu": {
+		"items": [
+			"save"
+		]
+	}
+}
