@@ -1,25 +1,33 @@
 {
-	"name": "Export Styles and Colors",
-	"description": "",
-	"author": "",
-	"homepage": "",
-	"version": "0.0.5",
+	"name": "Export Sketch to JSON",
+	"description": "Exports your Sketch document into a JSON file.",
+	"author": "Paul Jones",
+	"homepage": "https://github.com/PLJNS/sketch.export-styles-and-colors/",
+	"version": "0.1.0",
 	"identifier": "com.pljns.sketch.export-styles-and-colors",
 	"compatibleVersion": "53",
 	"bundleVersion": "2.0",
-	"appcast": "https://raw.githubusercontent.com/pljns/sketch.export-styles-and-colors/master/appcast.xml",
+	"appcast": "https://github.com/PLJNS/sketch.export-styles-and-colors/master/appcast.xml",
 	"commands": [
 		{
-			"name": "Save",
+			"name": "Save JSON to file...",
 			"identifier": "save",
 			"shortcut": "",
 			"script": "save.js",
 			"handler": "save"
+		},
+		{
+			"name": "Save Swift to file...",
+			"identifier": "swift",
+			"shortcut": "",
+			"script": "save.js",
+			"handler": "swift"
 		}
 	],
 	"menu": {
 		"items": [
-			"save"
+			"save",
+			"swift"
 		]
 	}
 }

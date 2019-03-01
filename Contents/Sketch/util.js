@@ -1,11 +1,4 @@
-function MSImmutableColorToDictionary(color) {
-    return {
-        "red": color.red(),
-        "green": color.green(),
-        "blue": color.blue(),
-        "alpha": color.alpha()
-    }
-}
+@import "constants.js";
 
 function MSColorToDictionary(color) {
     return {
@@ -39,6 +32,20 @@ function MSSharedStyleToDictionary(sharedStyle) {
     return {
         "name": String(sharedStyle.name()),
         "value": MSStyleToDictionary(style)
+    }
+}
+
+function MSDocumentDataToDictionary(documentData) {
+    var layerStyles = MSSharedStylesToArray(documentData.layerStyles().objects()) // MSSharedStyleContainer
+    var colorAssets = MSColorAssetsToArray(documentData.assets().colorAssets()) // [MSColor]
+    var layerTextStyles = MSSharedTextStyleContainerToArray(documentData.layerTextStyles()) // MSSharedTextStyleContainer
+
+    return {
+        "assets": {
+            "colorAssets": colorAssets
+        },
+        "layerTextStyles": layerTextStyles,
+        "layerStyles": layerStyles
     }
 }
 
@@ -95,6 +102,16 @@ function MSStyleBordersToArray(styleBorders) { // [MSStyleBorder]
     return borders
 }
 
+function MSSharedTextStyleContainerToArray(sharedTextStyleContainer) { // MSSharedTextStyleContainer
+    var textStyles = []
+    var layerTextStylesObjects = sharedTextStyleContainer.objects() // [MSSharedStyle]
+    for (var i = 0; i < layerTextStylesObjects.count(); i++) {
+        var sharedStyle = layerTextStylesObjects.objectAtIndex(i) // MSSharedStyle
+        textStyles.push(MSSharedStyleToDictionary(sharedStyle))
+    }
+    return textStyles
+}
+
 function MSStyleToDictionary(style) {
     var layerStyleDictionary = {}
 
@@ -122,7 +139,96 @@ function MSStyleToDictionary(style) {
         layerStyleDictionary["blur"] = MSStyleBlurToDictionary(styleBlur)
     }
 
+    var textStyleDictionary = MSTextStyleToDictionary(style.textStyle())
+    if (textStyleDictionary != null) {
+        layerStyleDictionary["textStyle"] = textStyleDictionary
+    }
+
     return layerStyleDictionary
+}
+
+function getMethods(obj) {
+    var result = [];
+    for (var id in obj) {
+        try {
+            if (typeof(obj[id]) == "function") {
+                result.push(id + ": " + obj[id].toString());
+            }
+        } catch (err) {
+            result.push(id + ": inaccessible");
+        }
+    }
+    return result;
+}
+
+function NSFontToDictionary(nsFont) {
+    var fontAttributes = nsFont.fontDescriptor().fontAttributes()
+    return {
+        "fontName": String(fontAttributes.objectForKey(NSFontNameAttribute)),
+        "fontSize": fontAttributes.objectForKey(NSFontSizeAttribute) * 1,
+    }
+}
+
+function NSParagraphStyleToDictionary(paragraphStyle) {
+    var paragraphyStyleDictionary = {}
+    paragraphyStyleDictionary["lineSpacing"] = paragraphStyle.lineSpacing() * 1 // CGFloat
+    paragraphyStyleDictionary["paragraphSpacing"] = paragraphStyle.paragraphSpacing() * 1 // CGFloat 
+    paragraphyStyleDictionary["alignment"] = paragraphStyle.alignment() * 1 // NSTextAlignment
+    paragraphyStyleDictionary["headIndent"] = paragraphStyle.headIndent() * 1 // CGFloat 
+    paragraphyStyleDictionary["tailIndent"] = paragraphStyle.tailIndent() * 1 // CGFloat 
+    paragraphyStyleDictionary["firstLineHeadIndent"] = paragraphStyle.firstLineHeadIndent() * 1 // CGFloat 
+    paragraphyStyleDictionary["minimumLineHeight"] = paragraphStyle.minimumLineHeight() * 1 // CGFloat 
+    paragraphyStyleDictionary["maximumLineHeight"] = paragraphStyle.maximumLineHeight() * 1 // CGFloat 
+    paragraphyStyleDictionary["lineBreakMode"] = paragraphStyle.lineBreakMode() * 1 // NSLineBreakMode
+    paragraphyStyleDictionary["baseWritingDirection"] = paragraphStyle.baseWritingDirection() * 1 // NSWritingDirection
+    paragraphyStyleDictionary["lineHeightMultiple"] = paragraphStyle.lineHeightMultiple() * 1 // CGFloat 
+    paragraphyStyleDictionary["paragraphSpacingBefore"] = paragraphStyle.paragraphSpacingBefore() * 1 // CGFloat 
+    paragraphyStyleDictionary["hyphenationFactor"] = paragraphStyle.hyphenationFactor() * 1 // Float
+        // paragraphyStyleDictionary["tabStops"] = paragraphStyle.tabStops() // [NSTextTab] 
+    paragraphyStyleDictionary["defaultTabInterval"] = paragraphStyle.defaultTabInterval() * 1 // CGFloat 
+    paragraphyStyleDictionary["allowsDefaultTighteningForTruncation"] = paragraphStyle.allowsDefaultTighteningForTruncation() * 1 // Bool 
+    paragraphyStyleDictionary["tighteningFactorForTruncation"] = paragraphStyle.tighteningFactorForTruncation() * 1 // Float
+        // paragraphyStyleDictionary["textBlocks"] = paragraphStyle.textBlocks() // [NSTextBlock] 
+        // paragraphyStyleDictionary["textLists"] = paragraphStyle.textLists() // [NSTextList] 
+    paragraphyStyleDictionary["headerLevel"] = paragraphStyle.headerLevel() * 1 // Int
+    return paragraphyStyleDictionary
+}
+
+function MSTextStyleToDictionary(textStyle) { // MSTextStyle
+    if (textStyle != null) {
+        var textStyleDictionary = {}
+
+        var kern = textStyle.attributes().NSKern // 0
+        var font = textStyle.attributes().NSFont // NSFont
+        var attributedStringTextTransformAttribute = textStyle.attributes().MSAttributedStringTextTransformAttribute // 1
+        var attributedStringColorAttribute = textStyle.attributes().MSAttributedStringColorAttribute // Immutable color
+        var textStyleVerticalAlignmentKey = textStyle.attributes().textStyleVerticalAlignmentKey // 0
+        var paragraphStyle = textStyle.attributes().NSParagraphStyle // NSParagraphStyle
+
+        if (kern != null) {
+            textStyleDictionary["kern"] = kern * 1
+        }
+        if (font != null) {
+            textStyleDictionary["font"] = NSFontToDictionary(font)
+        }
+        if (attributedStringTextTransformAttribute != null) {
+            textStyleDictionary["attributedStringTextTransformAttribute"] = attributedStringTextTransformAttribute * 1
+        }
+        if (attributedStringColorAttribute != null) {
+            textStyleDictionary["attributedStringColorAttribute"] = MSColorToDictionary(attributedStringColorAttribute)
+        }
+        if (textStyleVerticalAlignmentKey != null) {
+            textStyleDictionary["textStyleVerticalAlignmentKey"] = textStyleVerticalAlignmentKey * 1
+        }
+        if (paragraphStyle != null) {
+            textStyleDictionary["paragraphStyle"] = NSParagraphStyleToDictionary(paragraphStyle)
+        }
+
+
+        return textStyleDictionary
+    }
+
+    return null
 }
 
 function MSStyleFillToDictionary(fill) {
@@ -199,13 +305,35 @@ function CGPointToDictionary(point) {
     }
 }
 
-function MSGradientToDictionary(gradient) {
+function MSGradientStopToDictionary(stop) {
     return {
+        "position": stop.position() * 1,
+        "color": MSColorToDictionary(stop.color())
+    }
+}
+
+function MSGradientStopsToArray(stops) {
+    var stopDictionaries = []
+    for (var i = 0; i < stops.length; i++) {
+        var stop = stops[i]
+        stopDictionaries.push(MSGradientStopToDictionary(stop))
+    }
+    return stopDictionaries
+}
+
+function MSGradientToDictionary(gradient) {
+    var gradientDictionary = {
         "from": CGPointToDictionary(gradient.from()),
-        //"shouldSmoothenOpacity": gradient.shouldSmoothenOpacity,
-        "stops": gradient.stops(),
+        "shouldSmoothenOpacity": gradient.shouldSmoothenOpacity * 1,
+        "stops": MSGradientStopsToArray(gradient.stops()),
         "to": CGPointToDictionary(gradient.to()),
         "elipseLength": gradient.elipseLength(),
         "gradientType": gradient.gradientType()
     }
+
+    if (JSON.stringify(gradientDictionary) === JSON.stringify(emptyGradient)) {
+        return null
+    }
+
+    return gradientDictionary
 }
