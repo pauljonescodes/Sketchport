@@ -1,4 +1,5 @@
-@import "constants.js";
+@import "constants.js"
+@import "FoundationToJSONUtils.js"
 
 function MSColorToDictionary(color) {
     return {
@@ -145,53 +146,6 @@ function MSStyleToDictionary(style) {
     }
 
     return layerStyleDictionary
-}
-
-function getMethods(obj) {
-    var result = [];
-    for (var id in obj) {
-        try {
-            if (typeof(obj[id]) == "function") {
-                result.push(id + ": " + obj[id].toString());
-            }
-        } catch (err) {
-            result.push(id + ": inaccessible");
-        }
-    }
-    return result;
-}
-
-function NSFontToDictionary(nsFont) {
-    var fontAttributes = nsFont.fontDescriptor().fontAttributes()
-    return {
-        "fontName": String(fontAttributes.objectForKey(NSFontNameAttribute)),
-        "fontSize": fontAttributes.objectForKey(NSFontSizeAttribute) * 1,
-    }
-}
-
-function NSParagraphStyleToDictionary(paragraphStyle) {
-    var paragraphyStyleDictionary = {}
-    paragraphyStyleDictionary["lineSpacing"] = paragraphStyle.lineSpacing() * 1 // CGFloat
-    paragraphyStyleDictionary["paragraphSpacing"] = paragraphStyle.paragraphSpacing() * 1 // CGFloat 
-    paragraphyStyleDictionary["alignment"] = paragraphStyle.alignment() * 1 // NSTextAlignment
-    paragraphyStyleDictionary["headIndent"] = paragraphStyle.headIndent() * 1 // CGFloat 
-    paragraphyStyleDictionary["tailIndent"] = paragraphStyle.tailIndent() * 1 // CGFloat 
-    paragraphyStyleDictionary["firstLineHeadIndent"] = paragraphStyle.firstLineHeadIndent() * 1 // CGFloat 
-    paragraphyStyleDictionary["minimumLineHeight"] = paragraphStyle.minimumLineHeight() * 1 // CGFloat 
-    paragraphyStyleDictionary["maximumLineHeight"] = paragraphStyle.maximumLineHeight() * 1 // CGFloat 
-    paragraphyStyleDictionary["lineBreakMode"] = paragraphStyle.lineBreakMode() * 1 // NSLineBreakMode
-    paragraphyStyleDictionary["baseWritingDirection"] = paragraphStyle.baseWritingDirection() * 1 // NSWritingDirection
-    paragraphyStyleDictionary["lineHeightMultiple"] = paragraphStyle.lineHeightMultiple() * 1 // CGFloat 
-    paragraphyStyleDictionary["paragraphSpacingBefore"] = paragraphStyle.paragraphSpacingBefore() * 1 // CGFloat 
-    paragraphyStyleDictionary["hyphenationFactor"] = paragraphStyle.hyphenationFactor() * 1 // Float
-        // paragraphyStyleDictionary["tabStops"] = paragraphStyle.tabStops() // [NSTextTab] 
-    paragraphyStyleDictionary["defaultTabInterval"] = paragraphStyle.defaultTabInterval() * 1 // CGFloat 
-    paragraphyStyleDictionary["allowsDefaultTighteningForTruncation"] = paragraphStyle.allowsDefaultTighteningForTruncation() * 1 // Bool 
-    paragraphyStyleDictionary["tighteningFactorForTruncation"] = paragraphStyle.tighteningFactorForTruncation() * 1 // Float
-        // paragraphyStyleDictionary["textBlocks"] = paragraphStyle.textBlocks() // [NSTextBlock] 
-        // paragraphyStyleDictionary["textLists"] = paragraphStyle.textLists() // [NSTextList] 
-    paragraphyStyleDictionary["headerLevel"] = paragraphStyle.headerLevel() * 1 // Int
-    return paragraphyStyleDictionary
 }
 
 function MSTextStyleToDictionary(textStyle) { // MSTextStyle

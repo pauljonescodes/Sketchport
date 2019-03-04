@@ -1,4 +1,7 @@
-@import "util.js";
+@import "SketchToJSONUtils.js"
+@import "JSONToSwiftUtils.js"
+@import "SwiftColorsFileForColorAssets.js"
+@import "SwiftTextStyleFileForTextStyles.js"
 
 function save(context) {
     var save = NSSavePanel.savePanel()
@@ -15,20 +18,23 @@ function save(context) {
 }
 
 function swift(context) {
-    // var openPanel = NSOpenPanel.openPanel()
-    // openPanel.setAllowsMultipleSelection(false)
-    // openPanel.setCanChooseDirectories(true)
-    // openPanel.setCanCreateDirectories(true)
-    // openPanel.setCanChooseFiles(false)
+    var openPanel = NSOpenPanel.openPanel()
+    openPanel.setAllowsMultipleSelection(false)
+    openPanel.setCanChooseDirectories(true)
+    openPanel.setCanCreateDirectories(true)
+    openPanel.setCanChooseFiles(false)
 
-    // if (openPanel.runModal()) {
-    var documentDataDictionary = MSDocumentDataToDictionary(context.document.documentData())
-    var colorAssets = documentDataDictionary["assets"]["colorAssets"]
-
-    for (var i = 0; i < colorAssets.length; i++) {
+    if (openPanel.runModal()) {
+        var documentDataDictionary = MSDocumentDataToDictionary(context.document.documentData())
         
+        var colorAssets = documentDataDictionary["assets"]["colorAssets"]
+        var colorFile = NSString.stringWithString(SwiftColorsFileForColorAssets(colorAssets))
+        colorFile.writeToFile_atomically_encoding_error(`${openPanel.URL().path()}/Colors.swift`, true, NSUTF8StringEncoding, null)
+
+        var textStyles = documentDataDictionary["layerTextStyles"]
+        var textStylesFile = NSString.stringWithString(SwiftTextStyleFileForTextStyles(textStyles))
+        textStylesFile.writeToFile_atomically_encoding_error(`${openPanel.URL().path()}/TextStyle.swift`, true, NSUTF8StringEncoding, null)
     }
-
-
-    // }
 }
+
+
