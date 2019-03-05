@@ -1,6 +1,6 @@
 {
-	"name": "Export Sketch to JSON",
-	"description": "Exports your Sketch document into a JSON file.",
+	"name": "Export Sketch",
+	"description": "Exports your Sketch documents into JSON or Swift.",
 	"author": "Paul Jones",
 	"homepage": "https://github.com/PLJNS/sketch.export-styles-and-colors/",
 	"version": "0.1.0",
@@ -17,7 +17,7 @@
 			"handler": "save"
 		},
 		{
-			"name": "Save Swift to file...",
+			"name": "Save Swift to folder...",
 			"identifier": "swift",
 			"shortcut": "",
 			"script": "save.js",

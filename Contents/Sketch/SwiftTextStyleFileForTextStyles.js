@@ -44,8 +44,8 @@ struct TextAttributes {
     var caseEntries = ""
     for (textStyleIndex in textStyles) {
       var textStyle = textStyles[textStyleIndex]
-      var caseName = camelize(textStyle.name)
-      cases += `    case ${caseName}\n`
+      var caseName = makeVariableName(textStyle.name)
+      cases += `    case ${caseName} = "${textStyle.name}"\n`
       caseEntries += caseEntryFromTextStyle(textStyle)
     }
     return swiftTextStylesTemplateString.replace(/{{cases}}/g, cases).replace(/{{caseEntries}}/g, caseEntries)
@@ -56,7 +56,7 @@ function caseEntryFromTextStyle(textStyle) {
   var paragraphStyle = textStyleValue.paragraphStyle
   var color = textStyleValue.attributedStringColorAttribute
   return `
-        case .${camelize(textStyle.name)}:
+        case .${makeVariableName(textStyle.name)}:
           let font = UIFont(name: "${textStyleValue.font.fontName}", size: ${textStyleValue.font.fontSize * 1})!
           let color = UIColor(red: ${color.red}, green: ${color.green}, blue: ${color.blue}, alpha: ${color.alpha})
           let paragraphStyle = NSMutableParagraphStyle()
@@ -75,5 +75,5 @@ function caseEntryFromTextStyle(textStyle) {
           paragraphStyle.hyphenationFactor = ${paragraphStyle.hyphenationFactor}
           paragraphStyle.defaultTabInterval = ${paragraphStyle.defaultTabInterval}
           paragraphStyle.allowsDefaultTighteningForTruncation = true
-          return TextAttributes(font: font, color: color, kern: ${textStyleValue.kern}, paragraphStyle: paragraphStyle)`
+          return TextAttributes(font: font, color: color, kern: ${textStyleValue.kern || 0}, paragraphStyle: paragraphStyle)`
 }

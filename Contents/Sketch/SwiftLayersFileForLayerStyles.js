@@ -16,8 +16,8 @@ enum LayerStyles: String, CaseIterable {
     var caseEntries = ""
     for (layerStyleIndex in layerStyles) {
         var layerStyle = layerStyles[layerStyleIndex]
-        var caseName = camelize(layerStyle.name)
-        cases += `    case ${caseName}\n`
+        var caseName = makeVariableName(layerStyle.name)
+        cases += `    case ${caseName} = "${layerStyle.name}"\n`
         caseEntries += caseEntryFromLayerStyleValue(layerStyle)
     }
 
@@ -25,7 +25,7 @@ enum LayerStyles: String, CaseIterable {
 }
 
 function caseEntryFromLayerStyleValue(layerStyle) {
-    var caseName = camelize(layerStyle.name)
+    var caseName = makeVariableName(layerStyle.name)
     var layerStyleValue = layerStyle.value
     var fillDictionaries = layerStyleValue.fills
     var borderDictionaries = layerStyleValue.borders

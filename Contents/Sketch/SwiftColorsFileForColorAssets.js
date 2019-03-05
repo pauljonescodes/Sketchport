@@ -4,16 +4,16 @@ function SwiftColorsFileForColorAssets(colorAssets) {
     var colorNamesCode = ""
     var colorCasesCode = ""
     for (colorAssetIndex in colorAssets) {
-        var colorAsset = colorAssets[colorAssetIndex]
-        var colorAssetName = camelize(colorAsset.name)
-        colorNamesCode += `    case ${colorAssetName}\n`
+        var colorAsset = colorAssets[colorAssetIndex] || `unnamedColor${colorAssetIndex}`
+        var colorAssetName = makeVariableName(colorAsset.name)
+        colorNamesCode += `    case ${colorAssetName} = "${colorAsset.name}"\n`
         colorCasesCode += `        case .${colorAssetName}:
             return ${MSColorAssetToSwiftColorLiteral(colorAsset)}\n`
     }
 
     var swiftColorsTemplateString = `import UIKit
 
-public enum ColorName: String, CaseIterable {
+public enum Color: String, CaseIterable {
 {{colorNames}}
     var color: UIColor {
         switch self {
@@ -26,11 +26,6 @@ public enum ColorName: String, CaseIterable {
 }
 
 function MSColorAssetToSwiftColorLiteral(colorAsset) {
-    var red = colorAsset["red"]
-    var green = colorAsset["green"]
-    var blue = colorAsset["blue"]
-    var alpha = colorAsset["alpha"]
-    var entry = `#colorLiteral(red: ${red}, green: ${green}, blue: ${blue}, alpha: ${alpha})`
-    return entry
+    return `#colorLiteral(red: ${colorAsset.red}, green: ${colorAsset.green}, blue: ${colorAsset.blue}, alpha: ${colorAsset.alpha})`
 }
 
