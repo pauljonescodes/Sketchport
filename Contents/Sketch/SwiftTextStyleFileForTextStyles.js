@@ -73,7 +73,6 @@ function caseEntryFromTextStyle(textStyle) {
           paragraphStyle.lineHeightMultiple = ${paragraphStyle.lineHeightMultiple}
           paragraphStyle.paragraphSpacingBefore = ${paragraphStyle.paragraphSpacingBefore}
           paragraphStyle.hyphenationFactor = ${paragraphStyle.hyphenationFactor}
-          // paragraphStyle.tabStops = []
           paragraphStyle.defaultTabInterval = ${paragraphStyle.defaultTabInterval}
           paragraphStyle.allowsDefaultTighteningForTruncation = true
           return TextAttributes(font: font, color: color, kern: ${textStyleValue.kern}, paragraphStyle: paragraphStyle)`
