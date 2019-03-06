@@ -1,23 +1,23 @@
 {
-	"name": "Export Sketch",
-	"description": "Exports your Sketch documents into JSON or Swift.",
+	"name": "Sketchport",
+	"description": "Exports your Sketch documents into JSON or Swift, maybe someday more.",
 	"author": "Paul Jones",
 	"homepage": "https://github.com/PLJNS/sketch.export-styles-and-colors/",
 	"version": "0.1.0",
-	"identifier": "com.pljns.sketch.export-styles-and-colors",
+	"identifier": "com.pljns.sketch.sketchport",
 	"compatibleVersion": "53",
 	"bundleVersion": "2.0",
 	"appcast": "https://github.com/PLJNS/sketch.export-styles-and-colors/master/appcast.xml",
 	"commands": [
 		{
-			"name": "Save JSON to file...",
+			"name": "Export JSON to file...",
 			"identifier": "save",
 			"shortcut": "",
 			"script": "save.js",
 			"handler": "save"
 		},
 		{
-			"name": "Save Swift to folder...",
+			"name": "Export Swift to folder...",
 			"identifier": "swift",
 			"shortcut": "",
 			"script": "save.js",
