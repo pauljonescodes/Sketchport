@@ -53,9 +53,11 @@ function caseEntryFromLayerStyleValue(layerStyle) {
 }
 
 function fillEntryFromFillDictionary(fillDictionary, index) {
-    var layerName = `gradientLayer${index}`
+    var layerName = `fillLayer${index}`
     var gradientDictionary = fillDictionary.gradient
-    return `
+
+    if (gradientDictionary != null) {
+        return `
             let ${layerName} = CAGradientLayer()
             ${layerName}.startPoint = ${CGPointFromDictionary(gradientDictionary.from)}
             ${layerName}.endPoint = ${CGPointFromDictionary(gradientDictionary.to)}
@@ -67,6 +69,12 @@ function fillEntryFromFillDictionary(fillDictionary, index) {
                 ${UIColorsFromFillDictionaryStops(gradientDictionary.stops)}
             ]
             layers.append(${layerName})`
+    } else {
+        return `
+            let ${layerName} = CALayer()
+            ${layerName}.backgroundColor = ${MSColorAssetToUIColor(fillDictionary.color)}.cgColor
+            layers.append(${layerName})`
+    }
 }
 
 function CGPointFromDictionary(fillDictionary) {

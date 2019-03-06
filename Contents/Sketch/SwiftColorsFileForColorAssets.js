@@ -4,9 +4,15 @@ function SwiftColorsFileForColorAssets(colorAssets) {
     var colorNamesCode = ""
     var colorCasesCode = ""
     for (colorAssetIndex in colorAssets) {
-        var colorAsset = colorAssets[colorAssetIndex] || `unnamedColor${colorAssetIndex}`
-        var colorAssetName = makeVariableName(colorAsset.name)
-        colorNamesCode += `    case ${colorAssetName} = "${colorAsset.name}"\n`
+        var colorAsset = colorAssets[colorAssetIndex]
+        var colorAssetName = ""
+        console.log(colorAsset.name)
+        if (colorAsset.name != null && colorAsset.name != 'null') {
+            colorAssetName = makeVariableName(colorAsset.name)
+        } else {
+            colorAssetName = `unnamedColor${colorAssetIndex}`
+        }
+        colorNamesCode += `    case ${colorAssetName}\n`
         colorCasesCode += `        case .${colorAssetName}:
             return ${MSColorAssetToSwiftColorLiteral(colorAsset)}\n`
     }

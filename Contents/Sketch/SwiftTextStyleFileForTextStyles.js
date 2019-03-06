@@ -18,21 +18,23 @@ public enum TextStyle: String, CaseIterable {
 }
 
 struct TextAttributes {
-    let font : UIFont
+    let fontName : String
+    let fontSize : ${cgFloat}
     let color : UIColor
     let kern : ${cgFloat}
     let paragraphStyle : NSMutableParagraphStyle
     
-    init(font: UIFont, color: UIColor, kern: CGFloat, paragraphStyle: NSMutableParagraphStyle) {
+    init(fontName: String, fontSize: ${cgFloat}, color: UIColor, kern: CGFloat, paragraphStyle: NSMutableParagraphStyle) {
         self.kern = kern
-        self.font = font
+        self.fontName = fontName
+        self.fontSize = fontSize
         self.color = color
         self.paragraphStyle = paragraphStyle
     }
     
     var dictionary: ${dictionaryType} {
         return [
-            NSAttributedString.Key.font: font,
+            NSAttributedString.Key.font: UIFont(name: fontName, size: fontSize) ?? UIFont.systemFont(ofSize: fontSize),
             NSAttributedString.Key.kern: kern,
             NSAttributedString.Key.paragraphStyle: paragraphStyle,
             NSAttributedString.Key.foregroundColor: color,
@@ -57,7 +59,6 @@ function caseEntryFromTextStyle(textStyle) {
   var color = textStyleValue.attributedStringColorAttribute
   return `
         case .${makeVariableName(textStyle.name)}:
-          let font = UIFont(name: "${textStyleValue.font.fontName}", size: ${textStyleValue.font.fontSize * 1})!
           let color = UIColor(red: ${color.red}, green: ${color.green}, blue: ${color.blue}, alpha: ${color.alpha})
           let paragraphStyle = NSMutableParagraphStyle()
           paragraphStyle.lineSpacing = ${paragraphStyle.lineSpacing}
@@ -75,5 +76,5 @@ function caseEntryFromTextStyle(textStyle) {
           paragraphStyle.hyphenationFactor = ${paragraphStyle.hyphenationFactor}
           paragraphStyle.defaultTabInterval = ${paragraphStyle.defaultTabInterval}
           paragraphStyle.allowsDefaultTighteningForTruncation = true
-          return TextAttributes(font: font, color: color, kern: ${textStyleValue.kern || 0}, paragraphStyle: paragraphStyle)`
+          return TextAttributes(fontName: "${textStyleValue.font.fontName}", fontSize: ${textStyleValue.font.fontSize * 1}, color: color, kern: ${textStyleValue.kern || 0}, paragraphStyle: paragraphStyle)`
 }
