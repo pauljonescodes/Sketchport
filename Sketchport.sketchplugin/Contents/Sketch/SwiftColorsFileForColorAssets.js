@@ -6,7 +6,6 @@ function SwiftColorsFileForColorAssets(colorAssets) {
     for (colorAssetIndex in colorAssets) {
         var colorAsset = colorAssets[colorAssetIndex]
         var colorAssetName = ""
-        console.log(colorAsset.name)
         if (colorAsset.name != null && colorAsset.name != 'null') {
             colorAssetName = makeVariableName(colorAsset.name)
         } else {
@@ -15,6 +14,12 @@ function SwiftColorsFileForColorAssets(colorAssets) {
         colorNamesCode += `    case ${colorAssetName}\n`
         colorCasesCode += `        case .${colorAssetName}:
             return ${MSColorAssetToSwiftColorLiteral(colorAsset)}\n`
+    }
+
+    if (colorNamesCode == "" && colorCasesCode == "") {
+        colorNamesCode += `    case black\n`
+        colorCasesCode += `        case .black:
+            return #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)\n`
     }
 
     var swiftColorsTemplateString = `import UIKit

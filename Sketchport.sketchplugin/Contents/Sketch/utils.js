@@ -17,7 +17,7 @@ function camelize(str) {
 }
 
 function replaceInvalidCharacters(str) {
-    return str.split(/[.!?\\/_-]/).join(' ')
+    return str.split(/[.\\&:!?\\/_-]/).join(' ')
 }
 
 function makeVariableName(str) {

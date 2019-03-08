@@ -24,6 +24,7 @@ extension TextStylesViewController: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: "TextStyleCell")!
         let textStyle = TextStyle.allCases[indexPath.row]
         cell.textLabel?.attributedText = textStyle.attributedString(string: textStyle.rawValue)
+        cell.textLabel?.numberOfLines = 0
         return cell
     }
     

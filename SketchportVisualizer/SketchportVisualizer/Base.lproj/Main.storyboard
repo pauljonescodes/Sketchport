@@ -30,7 +30,7 @@
         <!--Layer Styles-->
         <scene sceneID="1b8-Kp-mFT">
             <objects>
-                <viewController id="AD9-Ue-lLK" customClass="LayerStylesViewController" customModule="SketchExportVisualizer" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="AD9-Ue-lLK" customClass="LayerStylesViewController" customModule="SketchportVisualizer" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="axV-h1-jrY">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -92,7 +92,7 @@
         <!--Text Styles-->
         <scene sceneID="BI2-RF-lCc">
             <objects>
-                <viewController id="VBQ-yn-7dC" customClass="TextStylesViewController" customModule="SketchExportVisualizer" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="VBQ-yn-7dC" customClass="TextStylesViewController" customModule="SketchportVisualizer" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="aL8-jW-Q3F">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -154,7 +154,7 @@
         <!--Color Assets-->
         <scene sceneID="4x5-Ld-uDR">
             <objects>
-                <viewController id="L8x-C0-0Rz" customClass="ColorAssetsViewController" customModule="SketchExportVisualizer" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="L8x-C0-0Rz" customClass="ColorAssetsViewController" customModule="SketchportVisualizer" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="CmT-98-VlC">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
